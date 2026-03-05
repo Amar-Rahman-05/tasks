@@ -195,7 +195,23 @@ export function changeQuestionTypeById(
     targetId: number,
     newQuestionType: QuestionType,
 ): Question[] {
-    return [];
+    return questions.map((question) => {
+        if (question.id !== targetId) {
+            return question;
+        }
+
+        let newOptions = question.options;
+
+        if (newQuestionType !== "multiple_choice_question") {
+            newOptions = [];
+        }
+
+        return {
+            ...question,
+            type: newQuestionType,
+            options: newOptions,
+        };
+    });
 }
 
 /**
@@ -214,7 +230,21 @@ export function editOption(
     targetOptionIndex: number,
     newOption: string,
 ): Question[] {
-    return [];
+    return questions.map((question: Question) => {
+        if (question.id !== targetId) {
+            return question;
+        }
+
+        const newOptions = [...question.options];
+
+        if (targetOptionIndex === -1) {
+            newOptions.push(newOption);
+        } else {
+            newOptions[targetOptionIndex] = newOption;
+        }
+
+        return { ...question, options: newOptions };
+    });
 }
 
 /***
@@ -223,10 +253,23 @@ export function editOption(
  * the duplicate inserted directly after the original question. Use the `duplicateQuestion`
  * function you defined previously; the `newId` is the parameter to use for the duplicate's ID.
  */
+import { duplicateQuestion } from "./objects";
+
 export function duplicateQuestionInArray(
     questions: Question[],
     targetId: number,
     newId: number,
 ): Question[] {
-    return [];
+    const result: Question[] = [];
+
+    for (const question of questions) {
+        result.push(question);
+
+        if (question.id === targetId) {
+            const copy = duplicateQuestion(newId, question);
+            result.push(copy);
+        }
+    }
+
+    return result;
 }
