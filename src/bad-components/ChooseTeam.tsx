@@ -16,13 +16,16 @@ export function ChooseTeam(): React.JSX.Element {
 
     function chooseMember(newMember: string) {
         if (!team.includes(newMember)) {
-            setTeam((prevTeam) => [...prevTeam, newMember]);
-            setAllOptions(allOptions.filter((option) => option !== newMember));
+            setTeam((prev) => [...prev, newMember]);
+            setAllOptions((prev) =>
+                prev.filter((option) => option !== newMember),
+            );
         }
     }
 
     function clearTeam() {
         setTeam([]);
+        setAllOptions(PEOPLE);
     }
 
     return (
