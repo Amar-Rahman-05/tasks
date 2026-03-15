@@ -5,9 +5,17 @@ export function CheckAnswer({
 }: {
     expectedAnswer: string;
 }): React.JSX.Element {
+    const [answer, setAnswer] = useState<string>("");
+
+    function updateAnswer(event: React.ChangeEvent<HTMLInputElement>) {
+        setAnswer(event.target.value);
+    }
+
     return (
         <div>
             <h3>Check Answer</h3>
+            <input value={answer} onChange={updateAnswer} />
+            <div>{answer === expectedAnswer ? "✔️" : "❌"}</div>
         </div>
     );
 }
